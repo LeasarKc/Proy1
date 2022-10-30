@@ -8,6 +8,13 @@ Diego Peña
 Luis Enrique Salazar
 ***********************************************************************/
 
+//       Struct del nodo de las listas de las matrices
+
+typedef struct nodeMay{
+    struct nodeFst *fst;
+    struct nodeMay *nextmay;
+} nodeMay;
+
 //       Struct del nodo que almacena las dimensiones de la matriz
 typedef struct nodeFst {
     int fil,colm;   //Dimensiones de la matriz entera.
@@ -45,7 +52,7 @@ int obtenerElemento(int,int,nodeFst*); // devuelve el elemento en una posicion d
 
 int asignarElemento(int,int,int,nodeFst*); //asigna un valor a una posicion de la matriz
 
-nodeFst *sumar(nodeFst*,nodeFst*); //devuelve una nueva matriz que resulta de la suma de las matrices que tiene por parametros
+nodeFst *suma(nodeFst*,nodeFst*); //devuelve una nueva matriz que resulta de la suma de las matrices que tiene por parametros
 
 void productoEsc(int, nodeFst*); // multiplica una matriz por un escalar
 
