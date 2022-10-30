@@ -170,6 +170,9 @@ void imprimir(nodeFst *m){
 }
 
 void trasponer(nodeFst*){
-lista aux = malloc(sizeof()); //Crear un nuevo nodo aux
 
+nodeF auxf = nuevoElementoF(1);
+for (i =1 ; i <= m->colm; i++){
+	if ()
+}
 }
