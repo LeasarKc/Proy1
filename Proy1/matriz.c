@@ -165,6 +165,16 @@ void productoEsc(int e, nodeFst *m){
 			col->value *= e; 
 }
 
+int ValidarProducto(nodeFst*, nodeFst*){
+
+
+}
+
 void imprimir(nodeFst *m){
+
+}
+
+void trasponer(nodeFst*){
+lista aux = malloc(sizeof()); //Crear un nuevo nodo aux
 
 }
