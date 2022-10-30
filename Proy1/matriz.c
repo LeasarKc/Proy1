@@ -54,6 +54,31 @@ nodeFst *crearM(int fil, int colm){
 	
 }
 
+/*nodeFst *crearMAuto(int fil,int colm){
+	nodeFst *new;
+	nodeF *auxf = NULL;
+	nodeC *auxc = NULL;
+	
+	int val = 0,i,j;
+	
+	if(fil == 0 || colm == 0)
+		return NULL;
+	
+	new = crearM(fil, colm);
+	
+	for(auxf = new->nextf = nuevoElementoF(1), i = 2; i < fil; i++, auxf = auxf->nextf){
+		auxf->nextf = nuevoElementoF(i);
+		
+		for(auxc = auxf->nextc = nuevoElementoM(val++, 1), j = 2; j < colm; j++, auxc = auxc-nextc){
+			auxc->next = nuevoElementoM(val++, j);
+		}
+		free(auxc->next);
+		val--;
+	}
+	free(auxf->next);
+	return new;
+}*/
+
 int obtenerElemento(int fila, int colm, nodeFst *m){
 	nodeF *auxf;
 	nodeC *auxc;
@@ -124,7 +149,6 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 					auxantf->nextf = newf;
 					
 					newf->nextc = nuevoElementoM(val, colm);
-					return 1;
 				}
 					
 		}
@@ -132,102 +156,6 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 	return 0;
 }
 
-nodeFst *suma(nodeFst *m1, nodeFst *m2){
-	nodeFst *new;
-	nodeC *auxc1, *auxc2, *auxc3;
-	nodeF *auxf1, *auxf2, *auxf3;
-	
-	if (m1->colm != m2->colm || m1->fil != m2-> fil)
-		return NULL;
-	
-	auxf1 = m1->nextf;
-	auxf2 = m2->nextf;
-	
-	//Crea la nueva matriz vacia
-	new = crearM(m1->fil, m1->colm); 
-	
-	//Primer elemento de las filas para no perder el apuntador
-	if (auxf1 && (!auxf2 || auxf1->fila <= auxf2->fila))
-		new->nextf = nuevoElementoF(auxf1->fila);
-	else if(auxf2)
-		new->nextf = nuevoElementoF(auxf2->fila);
-	
-	for (auxf3 = new->nextf; auxf1 || auxf2; auxf3 = auxf3->nextf){
-		
-		//Si para ambas matrices hay elementos en la misma fila
-		if (auxf1 == auxf2){
-			
-			auxc1 = auxf1->nextc;
-			auxc2 = auxf2->nextc;
-			//primer elemento para no perder el apuntador
-			if(auxc1->colm < auxc2->colm)
-				auxc3 = auxf3->nextc = nuevoElementoM(auxc1->value, auxc1->colm);
-			else if(auxc1->colm > auxc2->colm)
-					auxc3 = auxf3->nextc = nuevoElementoM(auxc2->value, auxc2->colm);
-				else
-					auxc3 = auxf3->nextc = nuevoElementoM(auxc1->value + auxc2->value, auxc1->colm);
-					
-			for(auxc1 = auxc1->nextc, auxc2 = auxc2->nextc; auxc1 || auxc2;){
-				
-				
-				if(!auxc2 || auxc1->colm < auxc2->colm){
-					auxc3 = auxf3->nextc = nuevoElementoM(auxc1->value, auxc1->colm);
-					auxc1 = auxc1->nextc;
-				}
-				else if(auxc1->colm > auxc2->colm){
-						auxc3 = auxf3->nextc = nuevoElementoM(auxc2->value, auxc2->colm);
-						auxc2 = auxc2->nextc;
-					}
-					else{
-						auxc3 = auxf3->nextc = nuevoElementoM(auxc1->value + auxc2->value, auxc1->colm);
-						auxc1 = auxc1->nextc;
-						auxc2 = auxc2->nextc;
-					}
-			}
-			
-			//Continuar con el ciclo de filas
-			auxf1 = auxf1->nextf;
-			auxf2 = auxf2->nextf;
-		}
-		else{
-			//Si existen elementos para la fila 1
-			if(auxf1 && (!auxf2 || auxf1->fila < auxf2->fila)){
-				
-				//crea el primer elemento por separado para no perder el apuntador
-				auxc3 = auxf3->nextc = nuevoElementoM(auxf1->nextc->value, auxf1->nextc->colm);
-				
-				for(auxc1 = auxf1->nextc->nextc; auxc1; auxc1=auxc1->nextc, auxc3 = auxc3->nextc)
-					auxc3->nextc = nuevoElementoM(auxc1->value,auxc1->colm);
-				
-				//instruccion para continuar el ciclo de filas
-				auxf1=auxf1->nextf;
-			}
-			
-			else{
-				//Si existen elementos para la fila 2
-				
-				//crea el primer elemento por separado
-				auxc3 = auxf3->nextc = nuevoElementoM(auxf2->nextc->value, auxf2->nextc->colm);
-				
-				for(auxc2 = auxf2->nextc->nextc; auxc2; auxc2=auxc2->nextc, auxc3 = auxc3->nextc)
-					auxc3->nextc = nuevoElementoM(auxc2->value,auxc2->colm);
-					
-				//Para continuar el ciclo de filas
-				auxf2 = auxf2->nextf;
-			}
-		}
-		
-		
-		//Crear el siguiente elemento de m3
-		if (auxf2 && auxf1 && auxf1->fila <= auxf2->fila)
-			auxf3->nextf = nuevoElementoF(auxf1->fila);
-		else if(auxf1 && auxf2)
-			auxf3->nextf = nuevoElementoF(auxf2->fila);
-			
-	}
-	
-	return new;
-}
 
 void productoEsc(int e, nodeFst *m){
 	nodeF *fil;
@@ -238,5 +166,10 @@ void productoEsc(int e, nodeFst *m){
 }
 
 void imprimir(nodeFst *m){
+
+}
+
+void trasponer(nodeFst*){
+lista aux = malloc(sizeof()); //Crear un nuevo nodo aux
 
 }
