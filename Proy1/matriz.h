@@ -44,8 +44,6 @@ nodeC *nuevoElementoM(int, int); //Crear una casilla de la matriz
 
 nodeFst *crearM(int,int); //crear por primera vez una matriz vacia
 
-nodeFst *crearMAuto(int,int); //Crear por primera vez una matriz con valores ordenados de 1 a fxc
-
 int llenarManual(nodeFst*); //Funcion llenar matriz con valores dados
 
 int obtenerElemento(int,int,nodeFst*); // devuelve el elemento en una posicion de la matrz
