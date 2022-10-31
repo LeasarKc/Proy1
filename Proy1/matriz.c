@@ -241,22 +241,62 @@ nodeFst *producto(nodeFst*m1, nodeFst*m2){
 	nodeFst *new;
 	nodeF *auxf1, *auxf2, *auxf3;
 	nodeC *auxc1, *auxc2, *auxc3;
+	int val;
+	register int i, j;
 	
-	if (m1->col!= m2->fil) return NULL;
+	if (m1->colm != m2->fil) return NULL;
 	
 	new = crearM(m1->fil, m2->colm);
 	
+	if (!m1->nextf || !m2->nextf) return new;
 	
+	auxf3 = new->nextf = nuevoElementoF(m1->nextf->fila);
+	
+	for(auxf1 = m1->nextf; auxf1;){
+		
+		for(i = 1, auxf2= m2->nextf; i <= new->colm; i++){
+			
+			//Si la fila corresponde con lo guardado en la casilla
+			if (auxf2 && auxf2->fila == i){
+				//multiplicar y sumar columnas y filas
+				for(val = 0, auxc1 = auxf1->nextc, auxc2 = auxf2->nextc, j = 1; j <= m1-> colm; j++){
+				
+					if (auxc1 && auxc2 && auxc1->colm == j && auxc2->colm ==j){
+						val += auxc1->value * auxc2->value;
+						auxc1=auxc1->nextc;
+						auxc2=auxc2->nextc;
+					}
+					else if(auxc1 && auxc1->colm == j)
+						auxc1=auxc1->nextc;
+					else if (auxc2)
+						auxc2=auxc2->nextc;
+			}
+			
+				if (val){
+					//Si es el riemr elemento de la fila
+					if(!auxf3->nextc)
+						auxc3 = auxf3->nextc = nuevoElementoM(val,i);
+					
+					auxc3->nextc = nuevoElementoM(val, i);
+					auxc3 = auxc3->nextc;
+				}
+			
+				auxf2 = auxf2->nextf;
+			}
+		}
+		
+		if(auxf3->nextc && auxf1->nextf){
+			auxf3->nextf = nuevoElementoF(auxf1->fila);
+			auxf3 = auxf3->nextf;
+		}
+		
+	}
+	if (!new->nextf->nextf && !new->nextf->nextc)
+		free(new->nextf);
+	
+	return new;
 }
 
 void imprimir(nodeFst *m){
 
-}
-
-void trasponer(nodeFst*){
-
-nodeF auxf = nuevoElementoF(1);
-for (i =1 ; i <= m->colm; i++){
-	if ()
-}
 }
