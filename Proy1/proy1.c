@@ -14,10 +14,11 @@ Luis Enrique Salazar
 #include "matriz.h"
 
 int main(){
-	//node *listp = NULL;
+	nodeMay *ap;
 	unsigned char op;
 	float val;
 	int m, n, i, j, cant, cont;
+	
 
 	//interfaz
 	while(1){	
@@ -30,6 +31,7 @@ int main(){
 				printf("\nIngrese las dimensiones de la matriz");
 				scanf("%d", &m);
 				scanf("%d", &n);
+				
 				fst = crearM(m, n);
 				printf("\nIngrese la cantidad de elementos no nulos de la matriz");
 				scanf("%d", &cant);

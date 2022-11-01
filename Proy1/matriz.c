@@ -36,6 +36,10 @@ nodeC *nuevoElementoM(int val, int j){
 	return new;
 }
 
+nodeMay *nuevoAp(){
+	
+}
+
 nodeFst *crearM(int fil, int colm){
 	nodeFst *new;
 	

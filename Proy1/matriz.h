@@ -42,6 +42,8 @@ nodeF *nuevoElementoF(int); //Crear una fila nueva
 
 nodeC *nuevoElementoM(int, int); //Crear una casilla de la matriz
 
+nodeMay *nuevoAp(); //Crear nuevo nodo lista matrices 
+
 nodeFst *crearM(int,int); //crear por primera vez una matriz vacia
 
 int llenarManual(nodeFst*); //Funcion llenar matriz con valores dados
