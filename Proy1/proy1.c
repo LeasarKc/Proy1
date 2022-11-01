@@ -17,7 +17,7 @@ int main(){
 	nodeMay *ap, *aux, *aux2, *aux3;
 	unsigned char op;
 	float val;
-	int m, n, i, j, cant, cont, indice;
+	int m, n, i, j, cont, indice;
 	char archivo[20];
 	
 
@@ -41,6 +41,9 @@ int main(){
 					aux = ap = crearM(m, n);
 				else
 				    aux->next = crearM(m,n);
+
+				int cant;
+
 				printf("\nIngrese la cantidad de elementos no nulos de la matriz");
 				scanf("%d", &cant);
 
