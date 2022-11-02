@@ -42,11 +42,11 @@ nodeF *nuevoElementoF(int); //Crear una fila nueva
 
 nodeC *nuevoElementoM(int, int); //Crear una casilla de la matriz
 
-nodeMay *nuevoAp(); //Crear nuevo nodo lista matrices 
-
 nodeFst *crearM(int,int); //crear por primera vez una matriz vacia
 
-int llenarManual(nodeFst*); //Funcion llenar matriz con valores dados
+int crearFile(char*, nodeFst *); //Crear un archivo de una matriz
+
+nodeFst *leerFile(); //Crear una matriz con los datos de un archivo
 
 int obtenerElemento(int,int,nodeFst*); // devuelve el elemento en una posicion de la matrz
 
@@ -58,6 +58,6 @@ void productoEsc(int, nodeFst*); // multiplica una matriz por un escalar
 
 nodeFst *producto(nodeFst*, nodeFst*); //devuelve la matriz producto de dos matrices
 
-void trasponer(nodeFst*); //traspone una matriz
+int trasponer(nodeFst*); //traspone una matriz
 
 void imprimir(nodeFst*); //muestra los valores de una matriz
