@@ -39,7 +39,7 @@ nodeC *nuevoElementoM(int val, int j){
 nodeFst *crearM(int fil, int colm){
 	nodeFst *new;
 	
-	if(fil == 0 || colm == 0)
+	if(fil <= 0 || colm <= 0)
 		return NULL;
 	
 	if ((new = (nodeFst*)malloc(sizeof(nodeFst)))== NULL){
@@ -52,6 +52,17 @@ nodeFst *crearM(int fil, int colm){
 	
 	return new;
 	
+}
+
+nodeMay *nuevoMay(){
+	nodeMay *new;
+	
+	if ((new = (nodeMay*)malloc(sizeof(nodeMay)))== NULL){
+		printf("\nERROR: Problema en malloc");
+		exit(1);
+	}
+	
+	return new;
 }
 
 int crearFile(char*arch, nodeFst *m){
@@ -114,31 +125,30 @@ nodeFst *leerFile(char* arch){
 	int fil, filant, colm, val,i;
 	char txt[20];
 	
-	FILE *file = fopen(arch, "w");
-	if (!file)
-		return NULL;
+	FILE *file = fopen(arch, "r");
+	if (!file) return NULL;
 	
 	//Leer filas
 	fgets(txt, 20, file);
-	filant = fil = atoi(txt);
+	fil = atoi(txt);
 	
 	//Leer columnas
 	fgets(txt, 20, file);
 	colm = atoi(txt);
 	
 	new = crearM(fil,colm);
+
+	if (feof(file)) return new;
 	
 	//Leer la primera fila
 	for(i = 0; i<20;txt[i] = 0, i++); //Resetea txt
         
 	for(i = 0; txt[i-1]!= ' '; i++) //Obtener los caracteres hasta el primer ' '
 		txt[i] = (char)fgetc(file);
-	fil = atoi(txt);
+	filant  = fil = atoi(txt);
 	
-	if (!feof(file))
-		auxf = new->nextf = nuevoElementoF(fil);
-	else
-		return new;
+
+	auxf = new->nextf = nuevoElementoF(fil);
 	
 	do{
 		//Leer la columna
@@ -164,7 +174,6 @@ nodeFst *leerFile(char* arch){
 		
 		//Leer la nueva fila
 		if(!feof(file)){
-			filant = fil;
 			
 			for(i = 0; i<20;txt[i] = 0, i++);
         
@@ -175,6 +184,7 @@ nodeFst *leerFile(char* arch){
 			if(fil!=filant){
 				auxf->nextf = nuevoElementoF(fil);
 				auxf = auxf->nextf;
+				afilant = fil;
 			}
 		}
 		
@@ -213,17 +223,30 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 	nodeC *auxc, *auxantc = NULL, *newc;
 	nodeF *auxf, *auxantf = NULL, *newf;
 	
+	if (!(fila <= m->fil && colm <= m->colm)){
+		printf("Sucedio un error, no se guardo el valor");
+		return 0;
+	}
+	
+	if(!m->nextf){
+		m->nextf = nuevoElementoF(fila);
+		m->nextf->nextc = nuevoElementoM(val, colm);
+	}
+	
 	for(auxf = m->nextf;; auxantf = auxf ,auxf=auxf->nextf){
 		
 		//Llega a la ultima fila sin encontrar a la que asignar
 		if (!auxf){
 			auxf = nuevoElementoF(fila);
 			auxantf->nextf = auxf;
+			auxf->nextc= nuevoElementoM(val, colm);
+			
+			return 1;
 		}
 		else{
 			//Encuentra la fila
 			if (auxf->fila == fila){
-				for(auxc = auxf->nextc;; auxantc = auxc, auxc=auxc->nextc){
+				for(auxc = auxf->nextc;; auxantc=auxc, auxc=auxc->nextc){
 					
 					//Llego al final de la fila sin encontrar la casilla, crea una
 					if(!auxc){
@@ -237,14 +260,18 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 							auxc->value = val;
 							return 1;
 						}
-						else
+						else{
 							//Se paso la posicion que debia ocupar, crea una entre la actual y la anterior
 							if (auxc->colm > colm){
 								newc = nuevoElementoM(val, colm);
-								newc->nextc = auxantc->nextc;
-								auxantc->nextc = newc;
+								newc->nextc = auxc;
+								if (auxantc)
+									auxantc->nextc = newc;
+								else
+									auxf->nextc = newc;
 								return 1;
 							}
+						}
 					}
 				}
 			}
@@ -252,8 +279,11 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 				//Se pasa de la fila
 				if (auxf->fila > fila){
 					newf = nuevoElementoF(fila);
-					newf->nextf = auxantf->nextf;
-					auxantf->nextf = newf;
+					newf->nextf = auxf;
+					if(auxantf)
+						auxantf->nextf = newf;
+					else
+						m->nextf = newf;
 					
 					newf->nextc = nuevoElementoM(val, colm);
 					return 1;
@@ -261,6 +291,7 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 					
 		}
 	}
+	printf("Sucedio un error, no se guardo el valor");
 	return 0;
 }
 
