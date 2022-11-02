@@ -31,6 +31,11 @@ int main(){
 				scanf("%d", &m);
 				scanf("%d", &n);
 				
+				if(m <=0 || n<=0){
+					printf("Dimensiones invalidas");
+					break;
+				}
+				
 				
 				aux = ap;
 				while(aux && aux->nextmay)
@@ -93,7 +98,7 @@ int main(){
 				else{
 				    aux->nextmay = nuevoMay();
 				    aux = aux->nextmay;
-				   aux->fst = leerFile(archivo);
+					aux->fst = leerFile(archivo);
 				}
 
 				printf("La matriz se guardo en la posicion %d ",cont);
@@ -115,7 +120,7 @@ int main(){
 				break;
 
 			case 5:
-				printf("\nEscriba la posicion del elemento, el numero de matriz y su valor: ");
+				printf("\nEscriba la posicion del elemento, su valor y el numero de matriz: ");
 				scanf("%d", &m);
 				scanf("%d", &n);
 				scanf("%d", &val);
@@ -137,10 +142,10 @@ int main(){
 				
 				for(i=1, aux2 = ap;i<indice; i++, aux2=aux2->nextmay);
 
-				cont = 1;
+				cont = 2;
 				
 				aux3 = ap;
-				while(aux3 && aux3->nextmay){
+				while(aux3->nextmay){
 					aux3 = aux3->nextmay;
 					cont++;
 				}

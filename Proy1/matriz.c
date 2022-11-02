@@ -320,7 +320,7 @@ nodeFst *suma(nodeFst *m1, nodeFst *m2){
 	for (auxf3 = new->nextf; auxf1 || auxf2; auxf3 = auxf3->nextf){
 		
 		//Si para ambas matrices hay elementos en la misma fila
-		if (auxf1->fila == auxf2->fila){
+		if (auxf1 && auxf2 && auxf1->fila == auxf2->fila){
 			
 			auxc1 = auxf1->nextc;
 			auxc2 = auxf2->nextc;
@@ -341,7 +341,7 @@ nodeFst *suma(nodeFst *m1, nodeFst *m2){
 				}
 					
 			//Ciclo para sumar las demas columnas
-			for(; auxc1 || auxc2;){
+			while(auxc1 || auxc2){
 				
 				//En caso de que c2 no exista o su columna sea mayor a c1
 				if(auxc1 && (!auxc2 || auxc1->colm < auxc2->colm)){
@@ -356,7 +356,7 @@ nodeFst *suma(nodeFst *m1, nodeFst *m2){
 						auxc3 = auxc3->nextc;
 					}
 					//Ambos existen y son de la misma columna
-					else{
+					else if(auxc1 && auxc2){
 						if (auxc1->value + auxc2->value !=0){//Siempre que su suma no sea cero...
 							auxc3->nextc = nuevoElementoM(auxc1->value + auxc2->value, auxc1->colm); //Se crea un elemento con su suma y con colm
 							auxc3 = auxc3->nextc;
@@ -367,9 +367,9 @@ nodeFst *suma(nodeFst *m1, nodeFst *m2){
 			}
 			
 			//Continuar con el ciclo de filas
-			if(auxf1->nextc)
+			if(auxf1)
 				auxf1 = auxf1->nextf;
-			if(auxf2->nextc)
+			if(auxf2)
 				auxf2 = auxf2->nextf;
 		}
 		else{
@@ -438,7 +438,7 @@ int trasponer(nodeFst *m){
 	auxfnew = m->nextf = nuevoElementoF(0);
 	
 	//Primer for, para recorrer las columnas
-	for(listo = 0; !listo ;){
+	for(listo = 0; !listo;){
 		
 		//encontrar el elemento de menor columna y conectarlo con la fila nueva
 		for(auxf = oldf, menorc = 9999999; auxf; auxf = auxf->nextf){
@@ -452,13 +452,13 @@ int trasponer(nodeFst *m){
 		//conectar las columnas de menorc a la lista de filas nueva
 		for(auxf = oldf, auxc = NULL; auxf; auxf = auxf->nextf){
 			//Si se encuentra con el primer elemento de la columna con menorc (ya conectado)
-			if (!auxc && auxf->nextc->colm == menorc){
+			if (!auxc && auxf->nextc && auxf->nextc->colm == menorc){
 				auxc = auxfnew->nextc;
 				auxf->nextc->colm = auxf->fila;	//Cambiar fila por columna
 				auxf->nextc = auxf->nextc->nextc;
 			}
 			//Sino, si encuentra un elemento con columna menorc
-			else if(auxf->nextc->colm == menorc){
+			else if(auxf->nextc && auxf->nextc->colm == menorc){
 				auxc->nextc = auxf->nextc;
 				auxf->nextc->colm = auxf->fila; //Cambiar fila por columna
 				auxf->nextc = auxf->nextc->nextc;
