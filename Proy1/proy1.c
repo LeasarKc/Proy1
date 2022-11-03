@@ -1,7 +1,7 @@
 /**********************************************************************
 main del primer proyecto de:
 Algoritmos y Programacion II
-Por: 
+Por:
 Diego Peña
 Luis Enrique Salazar
 ***********************************************************************/
@@ -17,26 +17,26 @@ int main(){
 	int val, e;
 	int m, n, i, cont, indice;
 	char archivo[20];
-	
+
 
 	//interfaz
-	while(1){	
+	while(1){
 		printf("\nElija una opcion: \n 1: Crear una matriz nueva \n 2: Obtener un elemento de una matriz \n 3: Leer una matriz de un archivo \n 4: Guardar una matriz en un archivo \n 5: Asignar un elemento a un espacio de la matriz \n 6: Sumar dos matrices\n 7: Multiplicar una matriz por un escalar\n 8: Realizar el producto de dos matrices\n 9: Trasponer una matriz\n 10: Imprimir una matriz \n 0: Salir\n");
 		scanf("%d", &op);
-		
+
 		switch(op){
 			case 0: return 0;
-			case 1: 
+			case 1:
 				printf("\nIngrese las dimensiones de la matriz ");
 				scanf("%d", &m);
 				scanf("%d", &n);
-				
+
 				if(m <=0 || n<=0){
 					printf("Dimensiones invalidas");
 					break;
 				}
-				
-				
+
+
 				aux = ap;
 				while(aux && aux->nextmay)
 					aux = aux->nextmay;
@@ -62,17 +62,17 @@ int main(){
 				    scanf("%d", &m);
 				    scanf("%d", &n);
 				    scanf("%d", &val);
-				    
+
 					asignarElemento(m,n,val,aux->fst);
 				}
 				break;
 
-			case 2: 
+			case 2:
 				printf("\nEscriba la posicion del elemento (filas, columnas) y el numero de matriz: ");
 				scanf("%d", &m);
 				scanf("%d", &n);
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
 
 				printf("%d",obtenerElemento(m,n,aux->fst));
@@ -82,7 +82,7 @@ int main(){
 			case 3:
 				printf("Ingrese el nombre del archivo ");
 				scanf("%s",archivo);
-				
+
 				aux = ap;
 				cont = 1;
 				while(aux && aux->nextmay){
@@ -112,7 +112,7 @@ int main(){
 				printf("Ingrese el numero de la matriz ");
 				scanf("%d", &indice);
 				for(i=1, aux=ap ;i<indice; i++, aux=aux->nextmay);
-				
+
 				if(!crearFile(archivo, aux->fst))
 					printf("Error al crear el archivo");
 
@@ -125,25 +125,25 @@ int main(){
 				scanf("%d", &n);
 				scanf("%d", &val);
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
 
 				asignarElemento(m, n , val , aux->fst);
-				
+
 				break;
 
-			case 6: 
+			case 6:
 			    printf("\nIngrese el numero de las matrices a sumar ");
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
 
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux2 = ap;i<indice; i++, aux2=aux2->nextmay);
 
 				cont = 2;
-				
+
 				aux3 = ap;
 				while(aux3->nextmay){
 					aux3 = aux3->nextmay;
@@ -151,14 +151,14 @@ int main(){
 				}
 
 				aux3->nextmay = nuevoMay();
-				aux3 = aux3->nextmay; 
+				aux3 = aux3->nextmay;
 				aux3->fst = suma(aux->fst,aux2->fst);
 
 				printf("\nla nueva matriz se encuentra en el numero %d de la lista de matrices ", cont);
 
 				break;
 
-			case 7: 
+			case 7:
 			    printf("\nEscriba el valor del escalar y el numero de la matriz ");
 				scanf("%d", &e);
 				scanf("%d", &indice);
@@ -171,14 +171,14 @@ int main(){
 
 				break;
 
-			case 8: 
+			case 8:
 				printf("\nIngrese el numero de las matrices en el orden a multiplicar ");
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
 
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux2 = ap;i<indice; i++, aux2=aux2->nextmay);
 
 				cont = 2;
@@ -195,10 +195,10 @@ int main(){
 
 				break;
 
-			case 9: 
+			case 9:
 				printf("\nIngrese el numero de la matriz a transponer ");
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
 
 				trasponer(aux->fst);
@@ -207,14 +207,14 @@ int main(){
 
 				break;
 
-			case 10: 
+			case 10:
 				printf("\nIngrese el numero de la matriz a imprimir ");
 				scanf("%d", &indice);
-				
+
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
-				
+
 				imprimir(aux->fst);
-	
+
 				break;
 
 			default:
