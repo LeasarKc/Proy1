@@ -3,7 +3,7 @@
 .h de funciones para el primer proyecto de:
 Algoritmos y Programacion II
 
-Por: 
+Por:
 Diego Peña
 Luis Enrique Salazar
 ***********************************************************************/
@@ -45,10 +45,6 @@ nodeC *nuevoElementoM(int, int); //Crear una casilla de la matriz
 nodeFst *crearM(int,int); //crear por primera vez una matriz vacia
 
 nodeMay *nuevoMay(); //Crea un nodo de la lista de matrices
-
-int crearFile(char*, nodeFst *); //Crear un archivo de una matriz
-
-nodeFst *leerFile(); //Crear una matriz con los datos de un archivo
 
 int obtenerElemento(int,int,nodeFst*); // devuelve el elemento en una posicion de la matrz
 
