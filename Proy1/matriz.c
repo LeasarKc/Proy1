@@ -65,137 +65,6 @@ nodeMay *nuevoMay(){
 	return new;
 }
 
-int crearFile(char*arch, nodeFst *m){
-	nodeF *auxf;
-	nodeC *auxc;
-	int num;
-	char txt[20];
-
-	FILE *file = fopen(arch, "w");
-	if (!file)
-		return 0;
-
-	//Recibir filas y escribirlas
-	num = m->fil;
-	sprintf(txt, "%d", num);
-	fputs(txt,file);
-
-	fputc('\n',file);
-
-	//Recibir filas y escribirlas
-	num = m->colm;
-	sprintf(txt, "%d", num);
-	fputs(txt,file);
-
-	fputc('\n',file);
-
-	for(auxf = m->nextf; auxf; auxf = auxf->nextf)
-		for(auxc = auxf->nextc; auxc; auxc = auxc->nextc){
-			//Recibir fila y escribirla
-			num = auxf->fila;
-			sprintf(txt, "%d", num);
-			fputs(txt,file);
-
-			fputc(' ',file);
-
-			//Recibir columna y recibirla
-			num = auxc->colm;
-			sprintf(txt, "%d", num);
-			fputs(txt,file);
-
-			fputc(' ',file);
-
-			//Recibir valor y eescribirlo
-			num = auxc->value;
-			sprintf(txt, "%d", num);
-			fputs(txt,file);
-
-			fputc('\n',file);
-		}
-
-	fclose(file);
-
-	return 1;
-}
-
-nodeFst *leerFile(char* arch){
-	nodeFst *new;
-	nodeF *auxf;
-	nodeC *auxc;
-	int fil, filant, colm, val,i;
-	char txt[20];
-
-	FILE *file = fopen(arch, "r");
-	if (!file) return NULL;
-
-	//Leer filas
-	fgets(txt, 20, file);
-	fil = atoi(txt);
-
-	//Leer columnas
-	fgets(txt, 20, file);
-	colm = atoi(txt);
-
-	new = crearM(fil,colm);
-
-	if (feof(file)) return new;
-
-	//Leer la primera fila
-	for(i = 0; i<20;txt[i] = 0, i++); //Resetea txt
-
-	for(i = 0; txt[i-1]!= ' '; i++) //Obtener los caracteres hasta el primer ' '
-		txt[i] = (char)fgetc(file);
-	filant  = fil = atoi(txt);
-
-
-	auxf = new->nextf = nuevoElementoF(fil);
-
-	do{
-		//Leer la columna
-		for(i = 0; i<20;txt[i] = 0, i++);
-
-		for(i = 0; txt[i-1]!= ' '; i++)
-			txt[i] = (char)fgetc(file);
-		colm = atoi(txt);
-
-		//Leer el valor
-		for(i = 0; i<20;txt[i] = 0, i++);
-
-		for(i = 0; txt[i-1]!= ' '; i++)
-			txt[i] = (char)fgetc(file);
-		val = atoi(txt);
-
-		if(auxf->nextc){
-			auxc->nextc = nuevoElementoM(val,colm);
-			auxc = auxc->nextc;
-		}
-		else
-			auxc = auxf->nextc = nuevoElementoM(val, colm);
-
-		//Leer la nueva fila
-		if(!feof(file)){
-
-			for(i = 0; i<20;txt[i] = 0, i++);
-
-			for(i = 0; txt[i-1]!= ' '; i++)
-				txt[i] = (char)fgetc(file);
-			fil = atoi(txt);
-
-			if(fil!=filant){
-				auxf->nextf = nuevoElementoF(fil);
-				auxf = auxf->nextf;
-				filant = fil;
-			}
-		}
-
-
-	}while(!feof(file));
-
-	fclose(file);
-
-	return new;
-}
-
 int obtenerElemento(int fila, int colm, nodeFst *m){
 	nodeF *auxf;
 	nodeC *auxc;
@@ -229,19 +98,22 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 	}
 
 	if(!m->nextf){
-		m->nextf = nuevoElementoF(fila);
-		m->nextf->nextc = nuevoElementoM(val, colm);
+        if (val){
+            m->nextf = nuevoElementoF(fila);
+            m->nextf->nextc = nuevoElementoM(val, colm);
+        }else return 1;
 	}
 
 	for(auxf = m->nextf;; auxantf = auxf ,auxf=auxf->nextf){
 
 		//Llega a la ultima fila sin encontrar a la que asignar
 		if (!auxf){
-			auxf = nuevoElementoF(fila);
-			auxantf->nextf = auxf;
-			auxf->nextc= nuevoElementoM(val, colm);
-
-			return 1;
+            if (val){
+                auxf = nuevoElementoF(fila);
+                auxantf->nextf = auxf;
+                auxf->nextc= nuevoElementoM(val, colm);
+            }
+            return 1;
 		}
 		else{
 			//Encuentra la fila
@@ -250,25 +122,48 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 
 					//Llego al final de la fila sin encontrar la casilla, crea una
 					if(!auxc){
-						auxc = nuevoElementoM(val, colm);
-						auxantc->nextc = auxc;
+                        if (val){
+                            auxc = nuevoElementoM(val, colm);
+                            auxantc->nextc = auxc;
+						}
 						return 1;
 					}
 					else{
 						//Encuentra la casilla a la que va a asignar
 						if (auxc->colm == colm){
-							auxc->value = val;
+                            if(val)
+                                auxc->value = val;
+                            else{
+
+                                if (auxantc)
+                                    auxantc->nextc = auxc->nextc;
+                                else{
+                                    auxf->nextc = auxc->nextc;
+
+                                    if(!auxf->nextc){
+                                        if(auxantf)
+                                            auxantf->nextf = auxf->nextf;
+                                        else
+                                            m->nextf = auxf->nextf;
+                                    }
+                                    free(auxf);
+                                }
+                                free(auxc);
+
+                            }
 							return 1;
 						}
 						else{
 							//Se paso la posicion que debia ocupar, crea una entre la actual y la anterior
 							if (auxc->colm > colm){
-								newc = nuevoElementoM(val, colm);
-								newc->nextc = auxc;
-								if (auxantc)
-									auxantc->nextc = newc;
-								else
-									auxf->nextc = newc;
+                                if(val){
+                                    newc = nuevoElementoM(val, colm);
+                                    newc->nextc = auxc;
+                                    if (auxantc)
+                                        auxantc->nextc = newc;
+                                    else
+                                        auxf->nextc = newc;
+                                }
 								return 1;
 							}
 						}
@@ -278,14 +173,16 @@ int asignarElemento(int fila, int colm, int val, nodeFst *m){
 			else
 				//Se pasa de la fila
 				if (auxf->fila > fila){
-					newf = nuevoElementoF(fila);
-					newf->nextf = auxf;
-					if(auxantf)
-						auxantf->nextf = newf;
-					else
-						m->nextf = newf;
+                    if(val){
+                        newf = nuevoElementoF(fila);
+                        newf->nextf = auxf;
+                        if(auxantf)
+                            auxantf->nextf = newf;
+                        else
+                            m->nextf = newf;
 
-					newf->nextc = nuevoElementoM(val, colm);
+                        newf->nextc = nuevoElementoM(val, colm);
+                    }
 					return 1;
 				}
 
@@ -417,9 +314,29 @@ nodeFst *suma(nodeFst *m1, nodeFst *m2){
 void productoEsc(int e, nodeFst *m){
 	nodeF *fil;
 	nodeC *col;
-	for(fil = m->nextf; fil; fil = fil->nextf)
-		for (col = fil->nextc; col; col = col->nextc)
-			col->value *= e;
+
+	if (e){
+        for(fil = m->nextf; fil; fil = fil->nextf)
+            for (col = fil->nextc; col; col = col->nextc)
+                col->value *= e;
+    }else{
+        nodeF *oldf = m->nextf;
+        nodeC *oldc;
+        m->nextf = NULL;
+
+        while(oldf){
+            oldc = oldf->nextc;
+            while(oldc){
+                col = oldc;
+                oldc = oldc->nextc;
+                free(col);
+            }
+
+            fil = oldf;
+            oldf = oldf->nextf;
+            free(fil);
+        }
+    }
 }
 
 int trasponer(nodeFst *m){
