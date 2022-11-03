@@ -21,7 +21,7 @@ int main(){
 
 	//interfaz
 	while(1){
-		printf("\nElija una opcion: \n 1: Crear una matriz nueva \n 2: Obtener un elemento de una matriz \n 3: Leer una matriz de un archivo \n 4: Guardar una matriz en un archivo \n 5: Asignar un elemento a un espacio de la matriz \n 6: Sumar dos matrices\n 7: Multiplicar una matriz por un escalar\n 8: Realizar el producto de dos matrices\n 9: Trasponer una matriz\n 10: Imprimir una matriz \n 0: Salir\n");
+		printf("\nElija una opcion: \n 1: Crear una matriz nueva \n 2: Obtener un elemento de una matriz  \n 3: Asignar un elemento a un espacio de la matriz \n 4: Sumar dos matrices\n 5: Multiplicar una matriz por un escalar\n 6: Realizar el producto de dos matrices\n 7: Trasponer una matriz\n 8: Imprimir una matriz \n 0: Salir\n");
 		scanf("%d", &op);
 
 		switch(op){
@@ -79,53 +79,18 @@ int main(){
 				printf("\nNumero de la matriz: ");
 				scanf("%d", &indice);
 
-				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
+				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				printf("%d",obtenerElemento(m,n,aux->fst));
 
 		    	break;
 
 			case 3:
-				printf("Ingrese el nombre del archivo ");
-				scanf("%s",archivo);
-
-				aux = ap;
-				cont = 1;
-				while(aux && aux->nextmay){
-					aux = aux->nextmay;
-					cont++;
-				}
-
-
-				if(!aux){
-					aux = ap = nuevoMay();
-					aux->fst = leerFile(archivo);
-				}
-				else{
-				    aux->nextmay = nuevoMay();
-				    aux = aux->nextmay;
-					aux->fst = leerFile(archivo);
-				}
-
-				printf("La matriz se guardo en la posicion %d ",cont);
-
-				break;
-
-			case 4:
-				printf("Ingrese el nombre del archivo ");
-				scanf("%s",archivo);
-
-				printf("Ingrese el numero de la matriz ");
-				scanf("%d", &indice);
-				for(i=1, aux=ap ;i<indice; i++, aux=aux->nextmay);
-
-				if(!crearFile(archivo, aux->fst))
-					printf("Error al crear el archivo");
-
-
-				break;
-
-			case 5:
 				printf("\nEscriba los datos del elemento ");
 				printf("\nFila: ");
 				scanf("%d", &m);
@@ -136,21 +101,35 @@ int main(){
 				printf("\nNumero de la matriz: ");
 				scanf("%d", &indice);
 
-				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
-
+				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+					}
 				asignarElemento(m, n , val , aux->fst);
 
 				break;
 
-			case 6:
+			case 4:
 			    printf("\nIngrese el numero de las matrices a sumar ");
 				scanf("%d", &indice);
 
-				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
+				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				scanf("%d", &indice);
 
-				for(i=1, aux2 = ap;i<indice; i++, aux2=aux2->nextmay);
+				for(i=1, aux2 = ap;i<indice; i++, aux2=aux2->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				cont = 2;
 
@@ -168,14 +147,19 @@ int main(){
 
 				break;
 
-			case 7:
+			case 5:
 			    printf("\nEscriba los datos ");
 				printf("\nValor del escalar ");
 				scanf("%d", &e);
 				printf("\nNumero de la matriz ");
 				scanf("%d", &indice);
 
-				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
+				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				productoEsc(e, aux->fst);
 
@@ -183,14 +167,24 @@ int main(){
 
 				break;
 
-			case 8:
+			case 6:
 				printf("\nIngrese el numero de las matrices en el orden a multiplicar ");
 				scanf("%d", &indice);
-				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
+				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				scanf("%d", &indice);
 
-				for(i=1, aux2 = ap;i<indice; i++, aux2=aux2->nextmay);
+				for(i=1, aux2 = ap;i<indice; i++, aux2=aux2->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				cont = 2;
 
@@ -206,11 +200,16 @@ int main(){
 
 				break;
 
-			case 9:
+			case 7:
 				printf("\nIngrese el numero de la matriz a transponer ");
 				scanf("%d", &indice);
 
-				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
+				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				trasponer(aux->fst);
 
@@ -218,11 +217,16 @@ int main(){
 
 				break;
 
-			case 10:
+			case 8:
 				printf("\nIngrese el numero de la matriz a imprimir ");
 				scanf("%d", &indice);
 
-				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
+				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay){
+					if (aux == NULL){
+						printf("\n Esa matriz no existe");
+						break;
+					}
+				}
 
 				imprimir(aux->fst);
 
