@@ -58,9 +58,12 @@ int main(){
 				scanf("%d", &cant);
 
 				for(cont=1; cont <= cant; cont++){
-				    printf("\nEscriba la posicion (filas, columnas) y valor del elemento %d: ", cont);
+				    printf("\nEscriba los datos del elemento %d: ", cont);
+					printf("\nFila:");
 				    scanf("%d", &m);
+					printf("\nColumna: ");
 				    scanf("%d", &n);
+					printf("\nValor del elemento: ");
 				    scanf("%d", &val);
 
 					asignarElemento(m,n,val,aux->fst);
@@ -68,9 +71,12 @@ int main(){
 				break;
 
 			case 2:
-				printf("\nEscriba la posicion del elemento (filas, columnas) y el numero de matriz: ");
+				printf("\nEscriba la posicion del elemento");
+				printf("\nFila: ");
 				scanf("%d", &m);
+				printf("\nColumna: ");
 				scanf("%d", &n);
+				printf("\nNumero de la matriz: ");
 				scanf("%d", &indice);
 
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
@@ -120,10 +126,14 @@ int main(){
 				break;
 
 			case 5:
-				printf("\nEscriba la posicion del elemento, su valor y el numero de matriz: ");
+				printf("\nEscriba los datos del elemento ");
+				printf("\nFila: ");
 				scanf("%d", &m);
+				printf("\nColumna: ");
 				scanf("%d", &n);
+				printf("\nValor del elemento");
 				scanf("%d", &val);
+				printf("\nNumero de la matriz: ");
 				scanf("%d", &indice);
 
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
@@ -159,8 +169,10 @@ int main(){
 				break;
 
 			case 7:
-			    printf("\nEscriba el valor del escalar y el numero de la matriz ");
+			    printf("\nEscriba los datos ");
+				printf("\nValor del escalar ");
 				scanf("%d", &e);
+				printf("\nNumero de la matriz ");
 				scanf("%d", &indice);
 
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
@@ -174,7 +186,6 @@ int main(){
 			case 8:
 				printf("\nIngrese el numero de las matrices en el orden a multiplicar ");
 				scanf("%d", &indice);
-
 				for(i=1, aux = ap;i<indice; i++, aux=aux->nextmay);
 
 				scanf("%d", &indice);
