@@ -1,0 +1,8 @@
+gcc -o proy1 {ruta de matriz.c} {ruta de proy1.c}
+
+
+Para no escribir las rutas, se recomienda poner ambos archivos en la carpeta de usuario 
+(/home/usuario/)
+y escribir:
+
+gcc -o proy1 matriz.c proy1.c
